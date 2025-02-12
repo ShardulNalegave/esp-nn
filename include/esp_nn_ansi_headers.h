@@ -206,7 +206,7 @@ void esp_nn_fully_connected_s8_ansi(const int8_t *input_data,
  *              input offsets: although int32_t, they are contained in 8 bits [-128, 127]
  *              out_mult, out_shift: int32_t* containing per-channel data
  */
-void esp_nn_fully_connected_per_channel_s8_ansi(const int8_t *input_data,
+void esp_nn_fully_connected_per_ch_s8_ansi(const int8_t *input_data,
                                     const int32_t input_offset,
                                     const uint16_t row_len,
                                     const int8_t *filter_data,

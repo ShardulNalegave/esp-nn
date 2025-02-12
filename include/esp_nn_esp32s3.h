@@ -207,7 +207,7 @@ void esp_nn_fully_connected_s8_esp32s3(const int8_t *input_data,
  *              Current version works only on aligned input.
  *              row_len and channels should both be multiple of 8.
  */
-void esp_nn_fully_connected_per_channel_s8_esp32s3(const int8_t *input_data,
+void esp_nn_fully_connected_per_ch_s8_esp32s3(const int8_t *input_data,
                                        const int32_t input_offset,
                                        const uint16_t row_len,
                                        const int8_t *filter_data,
@@ -249,7 +249,7 @@ void esp_nn_relu6_s8_esp32s3(int8_t *data, uint16_t size);
 #define esp_nn_max_pool_s8 esp_nn_max_pool_s8_esp32s3
 
 #define esp_nn_fully_connected_s8 esp_nn_fully_connected_s8_esp32s3
-#define esp_nn_fully_connected_per_channel_s8 esp_nn_fully_connected_per_channel_s8_esp32s3
+#define esp_nn_fully_connected_per_ch_s8 esp_nn_fully_connected_per_ch_s8_esp32s3
 
 #define esp_nn_get_softmax_scratch_size esp_nn_get_softmax_scratch_size_opt
 #define esp_nn_set_softmax_scratch_buf esp_nn_set_softmax_scratch_buf_opt

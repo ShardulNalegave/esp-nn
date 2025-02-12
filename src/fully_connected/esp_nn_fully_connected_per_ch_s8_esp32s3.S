@@ -1,5 +1,5 @@
 //
-// SPDX-FileCopyrightText: 2020-2023 Espressif Systems (Shanghai) CO LTD
+// SPDX-FileCopyrightText: 2025 Espressif Systems (Shanghai) CO LTD
 //
 // SPDX-License-Identifier: Apache-2.0
 //
@@ -8,10 +8,10 @@
     .literal_position
     .literal    .LC3_26_101, 1073741824 // nudge (1 << 30)
 
-    # Program Unit: esp_nn_fully_connected_per_channel_s8_esp32s3
-    .type   esp_nn_fully_connected_per_channel_s8_esp32s3, @function
+    # Program Unit: esp_nn_fully_connected_per_ch_s8_esp32s3
+    .type   esp_nn_fully_connected_per_ch_s8_esp32s3, @function
     .align   4
-    .global esp_nn_fully_connected_per_channel_s8_esp32s3
+    .global esp_nn_fully_connected_per_ch_s8_esp32s3
 
 // a2: input_data
 // a3: input_offset
@@ -27,18 +27,18 @@
 // on stack: activation_min
 // on stack: activation_max
 
-esp_nn_fully_connected_per_channel_s8_esp32s3:  # 0x4
+esp_nn_fully_connected_per_ch_s8_esp32s3:  # 0x4
     # qacc_scratch = 0
     // 40, filter_offset
     // 44, input_offset
     # gra_spill_temp_7 = 48
-    # gra_spill_temp_0 = 52
-    # gra_spill_temp_1 = 56
     # gra_spill_temp_2 = 60
     # gra_spill_temp_3 = 64
     # gra_spill_temp_4 = 68
     # gra_spill_temp_5 = 72
     # gra_spill_temp_6 = 76
+    # gra_spill_temp_8 = 80
+    # gra_spill_temp_9 = 84
 
     entry   a1,112                      #
     s32i.n  a5,a1,60                # [0]  gra_spill_temp_2, filter_data
@@ -69,9 +69,9 @@ esp_nn_fully_connected_per_channel_s8_esp32s3:  # 0x4
     mov.n       a14,a7                      # [15]
     mov.n       a11,a5                      # [31]
     l32i        a10,a1,124  # out_shift
-    s32i        a10,a1,80
-    l32i        a10,a1,128  # out_mult
-    s32i        a10,a1,84
+    l32i        a2,a1,128  # out_mult
+    s32i        a10,a1,80                   # gra_spill_temp_8
+    s32i        a2,a1,84                   # gra_spill_temp_9
     movi.n      a10,0                   # [32]
     mov.n       a2,a11                      # [33]
 
@@ -80,13 +80,13 @@ esp_nn_fully_connected_per_channel_s8_esp32s3:  # 0x4
     extui           a5,a11,0,3                  # [34]
     ee.zero.accx
     slli            a5,a5,1                     # [3]
-    bgei            a9,0,.LBB6_esp_nn_fully_connected_per_channel_s8_esp32s3            # [9]
+    bgei            a9,0,.LBB6_esp_nn_fully_connected_per_ch_s8_esp32s3            # [9]
 
     mov.n           a5,a10                      # [6]
     movi.n  a2,0                    # [0]
     j       .Lt_0_8706                      # [1]
 
-.LBB6_esp_nn_fully_connected_per_channel_s8_esp32s3:    # 0x147
+.LBB6_esp_nn_fully_connected_per_ch_s8_esp32s3:    # 0x147
     wur.sar_byte    a5                  # [5]
     ee.vld.l.64.ip  q4,a2,8         # [4]  id:267
     l32i            a4,a1,64                    # [0]  gra_spill_temp_3
@@ -94,7 +94,7 @@ esp_nn_fully_connected_per_channel_s8_esp32s3:  # 0x4
     addx8           a5,a4,a10                   # [2]
     ee.vcmp.lt.s8   q2,q4,q7            # [7]
     ee.vzip.8       q4,q2                   # [8]
-    loopgtz a4,.LBB45_esp_nn_fully_connected_per_channel_s8_esp32s3     # [3]
+    loopgtz a4,.LBB45_esp_nn_fully_connected_per_ch_s8_esp32s3     # [3]
 
     ee.vld.l.64.ip      q0,a2,8         # [0*II+0]  id:268
     ee.vld.l.64.ip      q1,a3,8         # [0*II+1]  id:270
@@ -107,7 +107,7 @@ esp_nn_fully_connected_per_channel_s8_esp32s3:  # 0x4
     ee.vadds.s16        q2,q2,q6            # [0*II+8]
     ee.vmulas.s16.accx  q1,q2       # [0*II+9]
 
-.LBB45_esp_nn_fully_connected_per_channel_s8_esp32s3:   # 0x170
+.LBB45_esp_nn_fully_connected_per_ch_s8_esp32s3:   # 0x170
     l32i    a2,a1,68                    # [0]  gra_spill_temp_4
 
 .Lt_0_8706: # 0x173
@@ -123,7 +123,7 @@ esp_nn_fully_connected_per_channel_s8_esp32s3:  # 0x4
     l32i.n  a4,a1,60                # [3]  gra_spill_temp_2
     add.n   a2,a2,a13                   # [4]
     add.n   a4,a4,a5                    # [5]
-    loopgtz a3,.LBB60_esp_nn_fully_connected_per_channel_s8_esp32s3     # [6]
+    loopgtz a3,.LBB60_esp_nn_fully_connected_per_ch_s8_esp32s3     # [6]
 
 // remaining c loop
     l8ui    a3,a2,0                     # [0*II+0]  id:299
@@ -137,7 +137,7 @@ esp_nn_fully_connected_per_channel_s8_esp32s3:  # 0x4
     addi.n  a4,a4,1                 # [0*II+4]
     add.n   a6,a6,a3                    # [0*II+9]
 
-.LBB60_esp_nn_fully_connected_per_channel_s8_esp32s3:   # 0x20f
+.LBB60_esp_nn_fully_connected_per_ch_s8_esp32s3:   # 0x20f
 
 // add bias
 .Lt_0_9730: # 0x20f
@@ -150,7 +150,7 @@ esp_nn_fully_connected_per_channel_s8_esp32s3:  # 0x4
 // apply quantization
 .Lt_0_10754:    # 0x218
     movi        a4,0
-    l32i        a5,a1,80                  # [25]  id:256 out_shift+0x0
+    l32i        a5,a1,80                  # [25]  id:256 gra_spill_temp_8, out_shift+0x0
     l32i        a5,a5,0
     max         a2,a5,a4                 // left_shift
     sub         a5,a2,a5                 // right_shift
@@ -158,7 +158,7 @@ esp_nn_fully_connected_per_channel_s8_esp32s3:  # 0x4
     ssl     a2                          # [3]
     sll     a6,a6                       # [5] // x * (1 << left_shift)
 
-    l32i    a4,a1,84                   # [2]  gra_spill_temp_10 //out_mult
+    l32i    a4,a1,84                   # [2]  gra_spill_temp_9 //out_mult
     l32r    a3,.LC3_26_101              # [0]
 
     add.n   a10,a10,a12                 # [0]
@@ -203,20 +203,20 @@ esp_nn_fully_connected_per_channel_s8_esp32s3:  # 0x4
     min     a4,a4,a7                    # [51]
     addi.n  a15,a15,1               # [52]
 
-    l32i        a7,a1,84
-    l32i        a8,a1,80
+    l32i        a7,a1,84                # gra_spill_temp_9
+    l32i        a8,a1,80                # gra_spill_temp_8
 
     s8i     a4,a6,0                     # store output
 
     addi.n      a7,a7,4                 # increment mult pointer
     addi.n      a8,a8,4                 # increment mult pointer
 
-    s32i        a7,a1,84
-    s32i        a8,a1,80
+    s32i        a7,a1,84                # gra_spill_temp_9
+    s32i        a8,a1,80                # gra_spill_temp_8
 
     bne     a3,a15,.Lt_0_8450               # [55]
 
 .Lt_0_7938: # 0x25c
     retw.n                          # [0]
 
-    .size   esp_nn_fully_connected_per_channel_s8_esp32s3, . - esp_nn_fully_connected_per_channel_s8_esp32s3
+    .size   esp_nn_fully_connected_per_ch_s8_esp32s3, . - esp_nn_fully_connected_per_ch_s8_esp32s3
